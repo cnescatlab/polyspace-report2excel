@@ -57,7 +57,7 @@ output_folder = sys.argv[2]
 try:
     os.mkdir(output_folder)
 except OSError:
-    if not "-y" in sys.argv:
+    if "-y" not in sys.argv:
         print("This folder already exist or you do not have permission to write here.")
         print("Continue ? (will overwrite existing files) [y/N]")
         try:
