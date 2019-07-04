@@ -29,6 +29,7 @@ python export-all.py input.html ouput-folder/
 - `--runtime` will export run-time report only (ignored if `--misra`).
 - `-y` will force overwrite if output files already exist.
 - `--poly14` will read report from polyspace 2014
+- `--csv` will export data in CSV instead of xlsx
 
 ## Create you own export script
 You can also create you own script if needed. With `HTMLReader` you can 

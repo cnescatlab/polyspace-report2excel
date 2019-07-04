@@ -38,7 +38,8 @@ class Exportcsv(object):
     def __init__(self, filename):
         self.sheets = dict()
         self.filename = filename
-        shutil.rmtree(self.filename)
+        if os.path.exists(self.filename):
+            shutil.rmtree(self.filename)
         os.mkdir(self.filename)
         self.output = os.path.abspath(self.filename)
         
