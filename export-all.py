@@ -70,7 +70,15 @@ except OSError:
             exit()
 
 # Lecture du rapport Polyspace
-reader = HTMLReader(input_file, version=polyversion)
+if ".rtf" in input_file:
+    from RTFReader import RTFReader
+    if not (misra or runtime):
+        print("With  rtf file you should precise if you want to read MISRA or Runtime!")
+        exit()
+    reader = RTFReader(input_file, version=polyversion)
+else:
+    reader = HTMLReader(input_file, version=polyversion)
+
 tables = reader.get_all_tables()
 reader.close()
 

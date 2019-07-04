@@ -106,6 +106,7 @@ class Exportcsv(object):
         csvPath = os.path.join(self.output, "Synthese.csv")
         synth_sheet = open(csvPath, "w", newline = "")
         csvWriter = self.__getWriter(synth_sheet)
+        line = 0
 
         for sheet in self.sheets.values():
             if is_misra and "by file" not in sheet[3].lower() and sheet[3].strip() or not is_misra:

@@ -5,15 +5,16 @@ to read a polyspace report and export misra or run-time results in
 an excel file for easier analyse.
 
 ## Installation
-You need to install XlsxWriter and html2text, you can use pip for that:
+You need to install XlsxWriter, striprtf and html2text, you can use pip for that:
 
 ```
 pip install XlsxWriter
 pip install html2text
+pip install striprtf
 ```
 
 ## Usage
-Export polyspace data in html then run export-all.py, you can use `--help`. 
+Export polyspace data in an HTML report or RTF report then run export-all.py, you can use `--help`. 
 
 Script was made for polyspace 2018 but you can run it with polyspace 2014 
 by adding `--poly14` argument.
@@ -23,6 +24,9 @@ Use arguments to filter what you need.
 
 ``` 
 python export-all.py input.html ouput-folder/
+# OR
+## WARNING, by converting RTF file you must precise --runtime or --misra
+python export-all.py input.rtf ouput-folder/ --runtime
 ```
 ## Arguments
 - `--misra` will export misra report only.

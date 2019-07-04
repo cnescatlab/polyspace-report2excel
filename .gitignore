@@ -1,0 +1,10 @@
+Poly14/
+Poly18/
+.idea
+__pycache__
+venv
+TESTCSV/
+TESTXLSX.xlsx
+export/
+export_csv/
+export_html/

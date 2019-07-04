@@ -1,0 +1,3 @@
+XlsxWriter
+html2text
+striprtf

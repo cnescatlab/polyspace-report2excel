@@ -29,31 +29,32 @@ PIPE_ESCAPED = "PIPE"
 
 # __________________ Definition de classes ___________________
 class HTMLReader(object):
+
     """ Nom de la classe: HTMLReader
         Description: Cette classe lit un fichier HTML et permet
         l'extraction des tableaux qu'il contient """
 
     def __init__(self, filename, version=18):
         self.__filename = filename
-        self.__file = open(filename, "r")
+        self._file = open(filename, "r")
         self.__version = version
-        self.__lines = None
+        self._lines = None
         # Structure de cette variable definie dans la doctstring de get_all_tables
         self.__tables = dict()
         print("Reading report for polyspace 20" + str(version))
 
-    def __read_lines(self):
+    def _read_lines(self):
         """ Converti un fichier HTML en MarkDown pour le rendre plus lisible """
 
         # Prise en compte des specificites de chaque version de polyspace
         # Une premiere conversion en Markdown est faite, le caractere | peux poser quelques soucis dans l'interpretation
         if self.__version == 18:
-            self.__lines = "".join(self.__file.readlines()) \
+            self._lines = "".join(self._file.readlines()) \
                 .replace(PIPE, PIPE_ESCAPED) \
                 .replace("<td><p>", "<td>").replace("</p></td>", "</td>")
         else:
-            self.__lines = "".join(self.__file.readlines()) \
-                .replace("|", "PIPE")
+            self._lines = "".join(self._file.readlines()) \
+                .replace(PIPE, PIPE_ESCAPED)
 
         read_html = HTML2Text()
         read_html.ignore_links = True
@@ -61,20 +62,20 @@ class HTMLReader(object):
         read_html.pad_tables = True if self.__version == 18 else False
         # Evite les retour a la ligne trop frequent
         read_html.body_width = 100000
-        self.__lines = read_html.handle(self.__lines).split("\n")
+        self._lines = read_html.handle(self._lines).split("\n")
 
-    def __detect_begin_table(self, line):
+    def _detect_begin_table(self, line):
         """ Verifie dans le markdown si on trouve le debut d'un tableau """
         line += 1
         # Recherche ligne vide suivie d'une ligne non vide
-        while line + 1 < len(self.__lines) \
-                and self.__lines[line].strip() \
-                and not self.__lines[line + 1].strip():
+        while line + 1 < len(self._lines) \
+                and self._lines[line].strip() \
+                and not self._lines[line + 1].strip():
             line += 1
 
         # On considere un debut de tableau si on trouve les headers de celui-ci
-        is_begin_table = bool(line + 2 < len(self.__lines)
-                              and SEPARATOR_HEADER_LINE in self.__lines[line + 2])
+        is_begin_table = bool(line + 2 < len(self._lines)
+                              and SEPARATOR_HEADER_LINE in self._lines[line + 2])
         return is_begin_table
 
     @staticmethod
@@ -92,48 +93,48 @@ class HTMLReader(object):
 
     def __is_not_begin_chapter(self, line):
         # IMPROVEMENT: Une expression reguliere pourrait ameliorer la precision de la recherche
-        return CHAR_BEGIN_CHAPTER not in self.__lines[line]
+        return CHAR_BEGIN_CHAPTER not in self._lines[line]
 
     def __find_chapter(self, line):
-        while line < len(self.__lines) and self.__is_not_begin_chapter(line):
+        while line < len(self._lines) and self.__is_not_begin_chapter(line):
             line += 1
         return line
 
     def __next_chapter_or_table(self, line, current_section):
-        while line < len(self.__lines) \
-                and not self.__detect_begin_table(line) \
+        while line < len(self._lines) \
+                and not self._detect_begin_table(line) \
                 and self.__is_not_begin_chapter(line):
-            if self.__lines[line].startswith(CHAR_SECTION):
-                current_section = self.__lines[line][len(CHAR_SECTION):]
+            if self._lines[line].startswith(CHAR_SECTION):
+                current_section = self._lines[line][len(CHAR_SECTION):]
             line += 1
         return line, current_section
 
     def __read_row(self, line, number_of_cols):
-        append_to_table = self.__lines[line]
+        append_to_table = self._lines[line]
 
         # On peux avoir des retours a la ligne dans une cellule, d'ou la boucle
-        while line + 1 < len(self.__lines) and len(
+        while line + 1 < len(self._lines) and len(
                 self.__split_line(append_to_table)) < number_of_cols:
 
             line += 1
-            append_to_table += "\n" + self.__lines[line]
+            append_to_table += "\n" + self._lines[line]
 
             # En terme de syntaxe HTML on a parfois deux celules en une, dans le rendu
             # cela ne se traduit par un simple retour a la ligne
             if SEPARATOR_SUB_CELL in append_to_table:
                 append_to_table = self.__remove_subcell(append_to_table)
-                self.__lines[line + 1] += "|"
+                self._lines[line + 1] += "|"
 
         # Sous cellule trouve sur la derniere cellule de la ligne d'un tableau
-        if self.__lines[line + 1].strip() == SEPARATOR_SUB_CELL:
+        if self._lines[line + 1].strip() == SEPARATOR_SUB_CELL:
             # Dans ce cas, tant qu'on trouve pas la ligne suivante d'un tableau on considere
             # le contenu comme etant de la cellule (il peux y avoir des retours a la ligne
             # dans cette cellule)
-            while line + 1 < len(self.__lines) \
-                    and self.__lines[line + 1].strip() \
-                    and SEPARATOR_CELL not in self.__lines[line + 1]:
+            while line + 1 < len(self._lines) \
+                    and self._lines[line + 1].strip() \
+                    and SEPARATOR_CELL not in self._lines[line + 1]:
                 line += 1
-                append_to_table += "\n" + self.__lines[line]
+                append_to_table += "\n" + self._lines[line]
                 if SEPARATOR_SUB_CELL in append_to_table:
                     append_to_table = self.__remove_subcell(append_to_table)
         return line, append_to_table
@@ -146,21 +147,22 @@ class HTMLReader(object):
 
     def __get_header_line(self, line):
         # La premiere ligne donnes les entetes, parfois il y a des retours a la ligne dans ces entetes
-        header_line = self.__lines[line]
-        while line < len(self.__lines) \
-                and SEPARATOR_HEADER_LINE not in self.__lines[line]:
+        header_line = self._lines[line]
+        while line < len(self._lines) \
+                and SEPARATOR_HEADER_LINE not in self._lines[line]:
             line += 1
-            if SEPARATOR_HEADER_LINE not in self.__lines[line]:
-                header_line += self.__lines[line]
+            if SEPARATOR_HEADER_LINE not in self._lines[line]:
+                header_line += self._lines[line]
         line += 1
         return line, header_line
 
+    def _detect_end_table(self, line):
+        return not(self.__version != 14 and self._lines[line + 1].strip() or self._lines[line].strip())
+
     def __extract_table(self, line, table, number_of_cols):
         # Un tableau se termine par 2 lignes vide (une seule dans polyspace 14...)
-        while line < len(self.__lines) \
-                and (self.__version != 14
-                     and self.__lines[line + 1].strip()
-                     or self.__lines[line].strip()):
+        while line < len(self._lines) \
+                and not self._detect_end_table(line):
             (line, append_to_table) = self.__read_row(line, number_of_cols)
             table["table"].append(self.__convert_to_output(append_to_table))
             line += 1
@@ -172,11 +174,11 @@ class HTMLReader(object):
         header_line = ""
 
         # Si on trouve un tableau
-        if line < len(self.__lines) and self.__detect_begin_table(line):
+        if line < len(self._lines) and self._detect_begin_table(line):
             # Initialisation de la sauvegarde
             line += 1
             table = {
-                "name": self.__lines[line],
+                "name": self._lines[line],
                 "section": current_section,
                 "table": []
             }
@@ -205,20 +207,20 @@ class HTMLReader(object):
         chapter = None
         current_section = None
 
-        while line < len(self.__lines):
+        while line < len(self._lines):
             # ETAPE 1: Recherche de chapitre
             line = self.__find_chapter(line)
 
             # Chapitre trouve
-            if line < len(self.__lines):
+            if line < len(self._lines):
                 # Enregistrement des infos generales sur le chapitre et initialisations.
-                chapter = self.__lines[line]
+                chapter = self._lines[line]
                 self.__tables[chapter] = []
                 current_section = None
                 line += 1
 
                 # Tant qu'on ne change pas de chapitre ou que l'on atteint pas la fin du fichier...
-                while line < len(self.__lines) and self.__is_not_begin_chapter(line):
+                while line < len(self._lines) and self.__is_not_begin_chapter(line):
                     # On cherche la fin du chapitre ou un tableau
                     (line, current_section) = self.__next_chapter_or_table(line, current_section)
                     line = self.__save_table(line, chapter, current_section)
@@ -241,11 +243,11 @@ class HTMLReader(object):
                         ...
                     ]
             """
-        if self.__lines is None:
-            self.__read_lines()
+        if self._lines is None:
+            self._read_lines()
         if len(self.__tables.keys()) == 0:
             self.__read_tables()
         return self.__tables
 
     def close(self):
-        self.__file.close()
+        self._file.close()
