@@ -4,15 +4,6 @@ polyspace-report2excel is a python module which adds the possibility
 to read a polyspace report and export misra or run-time results in 
 an excel file for easier analyse.
 
-## Installation
-You need to install XlsxWriter, striprtf and html2text, you can use pip for that:
-
-```
-pip install XlsxWriter
-pip install html2text
-pip install striprtf
-```
-
 ## Usage
 Export polyspace data in an HTML report or RTF report then run export-all.py, you can use `--help`. 
 
