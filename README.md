@@ -6,7 +6,7 @@ an excel file for easier analyse.
 
 ## Installation
 
-pip insall polyspace-report2excel
+pip install polyspace-report2excel
 
 ## Usage
 Export polyspace data in an HTML report or RTF report then run export-all.py, you can use `--help`. 
