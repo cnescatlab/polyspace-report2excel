@@ -1,7 +1,7 @@
 [project]
 # https://pypi.org/project/polyspace-report2excel/
 name = "polyspace-report2excel"
-version = "1.0" 
+version = "1.0rc1" 
 description = "read a polyspace report and export misra or run-time results"
 readme = "README.md"
 requires-python = ">=3"
