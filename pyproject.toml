@@ -5,7 +5,7 @@ version = "1.0"
 description = "read a polyspace report and export misra or run-time results"
 readme = "README.md"
 requires-python = ">=3"
-license = {file = "LICENSE.txt"} ##TODO
+license = {file = "LICENSE"}
 keywords = ["polyspace", "report", "excel", "misra"]
 authors = [
   {name = "CAT Lab", email = "L-lequal@cnes.fr" }
@@ -14,10 +14,10 @@ maintainers = [
   {name = "CAT Lab", email = "L-lequal@cnes.fr" }
 ]
 classifiers = [
-  "Development Status :: 5 - Stable",
+  "Development Status :: 6 - Mature",
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Quality Assurance",
-  "License :: OSI Approved :: MIT License", ## TODO
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
   "Programming Language :: Python :: 3"
 ]
 
@@ -38,7 +38,8 @@ dependencies = [
 # If there are data files included in your packages that need to be
 # installed, specify them here.
 package-data = {}
+py-modules = []
 
 [build-system]
-requires = ["setuptools>=43.0.0", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
