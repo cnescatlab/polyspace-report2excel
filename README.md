@@ -4,9 +4,9 @@ polyspace-report2excel is a python module which adds the possibility
 to read a polyspace report and export misra or run-time results in 
 an excel file for easier analyse.
 
-## Installation
+## Package installation
 
-pip install polyspace-report2excel
+`pip install polyspace-report2excel`
 
 ## Usage
 Export polyspace data in an HTML report or RTF report then run export-all.py, you can use `--help`. 
@@ -17,10 +17,25 @@ by adding `--poly14` argument.
 By default it export all tables to excel and generate one file per Polyspace chapter.
 Use arguments to filter what you need.
 
+:warning: by converting RTF file you must precise --runtime or --misra
+
+
+### Usage example with the pip package
+```
+polyspace-report2excel export-all input.html output-folder/
+
+polyspace-report2excel export-all input.rtf ouput-folder/ --runtime
+```
+
+### Usage example by cloning the repository
+If you don't want to install the package `polyspace-report2excel`, first install the dependencies.
+
+`pip install XlsxWriter html2text striprtf`
+
+Then, you can run:
 ``` 
 python export-all.py input.html ouput-folder/
-# OR
-## WARNING, by converting RTF file you must precise --runtime or --misra
+
 python export-all.py input.rtf ouput-folder/ --runtime
 ```
 ## Arguments

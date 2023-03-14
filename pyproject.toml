@@ -14,7 +14,7 @@ maintainers = [
   {name = "CAT Lab", email = "L-lequal@cnes.fr" }
 ]
 classifiers = [
-  "Development Status :: 6 - Mature",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Quality Assurance",
   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -43,3 +43,7 @@ py-modules = []
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+# Entry points
+[project.scripts]
+export-all = "polyspace-report2excel.export-all"

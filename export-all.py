@@ -1,10 +1,10 @@
 
-""" Nom du script: HTMLReader
+""" Nom du script: export-all
  Description: Ce script permet d'exporter un rapport Polyspace (html) vers un fichier excel
-    L'utilisation est detailleee via `python export-all.py --help`
+    L'utilisation est detaillée via `python export-all.py --help`
     Pour l'utiliser il faut installer les paquets complementaires:
-    `pip instal XlsxWriter`
-    `pip instal html2text`
+    `pip install XlsxWriter`
+    `pip install html2text`
  Version: 1
  Date: 9 avril 2019
  Auteur: Louis MARTIN """
