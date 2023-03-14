@@ -3,9 +3,6 @@
 """ Nom du module: HTMLReader
  Description: Ce module permet la lecture d'un HTML et l'extraction des
     tableaux qu'il contient.
- Version: 1
- Date: 9 avril 2019
- Auteur: Louis MARTIN
  Methodes et classes publiques:
         - HTMLReader
             __init__(filename, version=18)

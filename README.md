@@ -22,9 +22,9 @@ Use arguments to filter what you need.
 
 ### Usage example with the pip package
 ```
-polyspace-report2excel export-all input.html output-folder/
+polyspace-report2excel p2e input.html output-folder/
 
-polyspace-report2excel export-all input.rtf ouput-folder/ --runtime
+polyspace-report2excel p2e input.rtf ouput-folder/ --runtime
 ```
 
 ### Usage example by cloning the repository
