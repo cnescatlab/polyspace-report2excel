@@ -1,7 +1,5 @@
 """
 Modules:
-export-all:
-    export Polyspace report (html or RTF) to excel file
 exportcsv:
     write to csv file
 exportxlsx:
@@ -17,7 +15,7 @@ main:
 def main():
     import sys
     import main
-    sys.exit(main.main())
+    sys.exit(p2e.main())
 
 if __name__ == "__main__":
     main()
