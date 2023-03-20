@@ -13,9 +13,5 @@ main:
 """
 
 def main():
-    import sys
-    import main
-    sys.exit(p2e.main())
-
-if __name__ == "__main__":
-    main()
+    import p2e.main
+    p2e.main.main()

@@ -1,7 +1,7 @@
 [project]
 # https://pypi.org/project/polyspace-report2excel/
 name = "polyspace-report2excel"
-version = "1.0rc2" 
+version = "1.0rc3" 
 description = "read a polyspace report and export misra or run-time results"
 readme = "README.md"
 requires-python = ">=3"
@@ -34,11 +34,6 @@ dependencies = [
 
 [project.scripts]
 p2e = "p2e:main"
-
-
-[tool.setuptools]
-package-data = {}
-py-modules = []
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]

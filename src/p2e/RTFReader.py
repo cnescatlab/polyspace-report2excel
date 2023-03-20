@@ -10,7 +10,7 @@
 """
 
 # __________________________ IMPORT __________________________
-import HTMLReader
+from p2e import HTMLReader
 from striprtf.striprtf import rtf_to_text
 
 # ________________________ CONSTANTES ________________________

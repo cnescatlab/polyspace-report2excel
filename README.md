@@ -22,9 +22,9 @@ Use arguments to filter what you need.
 
 ### Usage example with the pip package
 ```
-polyspace-report2excel p2e input.html output-folder/
+p2e input.html output-folder/
 
-polyspace-report2excel p2e input.rtf ouput-folder/ --runtime
+p2e input.rtf ouput-folder/ --runtime
 ```
 
 ### Usage example by cloning the repository
@@ -34,9 +34,9 @@ If you don't want to install the package `polyspace-report2excel`, first install
 
 Then, you can run:
 ``` 
-python export-all.py input.html ouput-folder/
+python main.py input.html ouput-folder/
 
-python export-all.py input.rtf ouput-folder/ --runtime
+python main.py input.rtf ouput-folder/ --runtime
 ```
 ## Arguments
 - `--misra` will export misra report only.

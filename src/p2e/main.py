@@ -8,9 +8,9 @@
 import sys
 import os
 
-from exportcsv import Exportcsv
-from exportxlsx import Exportxlsx
-from HTMLReader import HTMLReader
+from p2e.exportcsv import Exportcsv
+from p2e.exportxlsx import Exportxlsx
+from p2e.HTMLReader import HTMLReader
 
 
 def main():
@@ -67,7 +67,7 @@ def main():
 
     # Lecture du rapport Polyspace
     if ".rtf" in input_file:
-        from RTFReader import RTFReader
+        from p2e.RTFReader import RTFReader
         if not (misra or runtime):
             print("With  rtf file you should precise if you want to read MISRA or Runtime!")
             exit()
