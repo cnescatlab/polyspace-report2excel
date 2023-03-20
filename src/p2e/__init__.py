@@ -17,7 +17,7 @@ main:
 def main():
     import sys
     import main
-    sys.exit(export-all.main())
+    sys.exit(main.main())
 
 if __name__ == "__main__":
     main()
