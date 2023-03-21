@@ -30,7 +30,10 @@ def main():
 
     # ____________________ LECTURE ARGUMENTS ______________________
     if len(sys.argv) < 3 or "--help" in sys.argv or "-h" in sys.argv:
-        print("Usage: python export-all.py input-file.html output-folder")
+        print("Usage: p2e input.html output-folder/")
+        print("")
+        print("If you didn't download the package but cloned the repository,")
+        print("Usage: python main.py input.html ouput-folder/")
         print("")
         print("Export all tables by default.")
         print("  use --misra to export only misra report")
