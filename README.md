@@ -30,7 +30,7 @@ p2e input.rtf ouput-folder/ --runtime
 ### Usage example by cloning the repository
 If you don't want to install the package `polyspace-report2excel`, first install the dependencies.
 
-`pip install XlsxWriter html2text striprtf`
+`pip install .`
 
 Then, you can run:
 ``` 
