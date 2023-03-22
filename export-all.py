@@ -100,9 +100,9 @@ if misra or runtime:
 for chapter in tables.keys():
     # ouverture du fichier de sortie (un fichier par chapitre)
     if not "--csv" in sys.argv:
-        output = Exportxlsx(output_folder + "\\" + Exportxlsx.normalize(chapter))
+        output = Exportxlsx(os.path.join(output_folder, Exportxlsx.normalize(chapter)))
     else:
-        output = Exportcsv(output_folder + "\\" + Exportcsv.normalize(chapter))
+        output = Exportcsv(os.path.join(output_folder, Exportcsv.normalize(chapter)))
 
     # Export de toute les tables dans les excel
     for table in tables[chapter]:
