@@ -1,8 +1,5 @@
-""" Nom du module: exportcsv
- Description: Ce module permet l'ecriture vers un fichier csv.
- Version: 1
- Date: 9 avril 2019
- Auteur: Louis MARTIN
+""" Nom du module: exportxlsx
+ Description: Ce module permet l'ecriture vers un fichier excel.
  Methodes et classes publiques:
         - exportxlsx
             __init__(filename)
@@ -14,10 +11,11 @@
 """
 
 # __________________________ IMPORT __________________________
-import csv,os,shutil
+import xlsxwriter as xwriter
+
 
 # __________________ Definition de classes ___________________
-class Exportcsv(object):
+class Exportxlsx(object):
     """ Nom de la classe: Exportxlsx
      Description: Permet l'export d'un ensemble de donnees dans un fichier excel"""
 
@@ -38,14 +36,9 @@ class Exportcsv(object):
     def __init__(self, filename):
         self.sheets = dict()
         self.filename = filename
-        if os.path.exists(self.filename):
-            shutil.rmtree(self.filename)
-        os.mkdir(self.filename)
-        self.output = os.path.abspath(self.filename)
-        
-    @staticmethod
-    def __getWriter(path):
-        return csv.writer(path,delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        self.output = xwriter.Workbook(self.filename + ".xlsx")
+
+
 
     def add_sheet(self, name, data, section=None):
         """
@@ -67,56 +60,61 @@ class Exportcsv(object):
         if self.output is None:
             raise Exception("Output file is closed")
 
-
-
         # On ajoute une colonne si besoin.
         if section is not None:
             data = [["#"] + data[0]] + [[section] + d for d in data[1:]]
 
-        csvPath = os.path.join(self.output, self.normalize(name)+".csv")
-
         # On essaye de creer la feuille, si celle-ci existe deja l'exception DuplicateWorksheetName sera levee
-        if not os.path.exists(csvPath):
-            sheet = open(csvPath, "w", newline = "")
+        try:
+            sheet = self.output.add_worksheet(self.stringtofilename(name))
             # On garde les donnees en memoire, utile si on cherche a faire une synthese plus tard
-
-            self.sheets[self.stringtofilename(name)] = [None, len(data), data, name]
+            self.sheets[self.stringtofilename(name)] = [sheet, len(data), data, name]
             firstline = 0
-        else:
-            sheet = open(csvPath, "a", newline = "")
+        except xwriter.exceptions.DuplicateWorksheetName:
+            sheet = self.sheets[self.stringtofilename(name)][0]
             firstline = self.sheets[self.stringtofilename(name)][1]
             data = data[1:]
             self.sheets[self.stringtofilename(name)][2] += data
 
-        csvWriter = self.__getWriter(sheet)
+        # Cette variable determine la longueur maximale d'une case, cela est utilise pour mettre en forme les cellules
+        # dans excel
+        col_width = [0 for i in range(len(data[0]))]
+        bold = self.output.add_format({'bold': True})
 
         # Ajout des donnees
         for line in range(firstline, firstline + len(data)):
             i = line - firstline
             data[i] = [d.strip() for d in data[i]]
-            if data[i][-1] == '\n':
-                del(data[i][-1])
 
-            csvWriter.writerow(data[i])
-        sheet.close()
+            sheet.write_row(line, 0, data[i], cell_format=(bold if line == 0 else None))
+
+            # Calcul de la taille des colonnes
+            try:
+                col_width = [max(col_width[j], len(data[i][j]) + 1) for j in range(len(col_width))]
+            except IndexError:
+                print("Error while formating cells")
+                for d in data:
+                    print(d)
+        # Formatage des colonnes
+        for i in range(len(col_width)):
+            sheet.set_column(i, i, col_width[i])
 
     def create_synthese(self, is_misra=False):
         """ Permet la creation d'une feuille de synthese
         regroupant les donnees des autres feuilles """
-        csvPath = os.path.join(self.output, "Synthese.csv")
-        synth_sheet = open(csvPath, "w", newline = "")
-        csvWriter = self.__getWriter(synth_sheet)
+        synth_sheet = self.output.add_worksheet("Synthese")
         line = 0
+        bold = self.output.add_format({'bold': True})
 
         for sheet in self.sheets.values():
             if is_misra and "by file" not in sheet[3].lower() and sheet[3].strip() or not is_misra:
                 if line == 0:
-                    csvWriter.writerow(['file'] + sheet[2][0])
+                    synth_sheet.write_row(line, 0, ['file'] + sheet[2][0], cell_format=bold)
                     line = 1
                 for row in sheet[2][1:]:
                     row = [d.strip() for d in row]
-                    csvWriter.writerow([self.stringtofilename(sheet[3])] + row)
-        synth_sheet.close()
+                    synth_sheet.write_row(line, 0, [self.stringtofilename(sheet[3])] + row)
+                    line += 1
 
 
 
@@ -126,4 +124,5 @@ class Exportcsv(object):
             Finalise l'ecriture et ferme le fichier.
             Doit etre appele avant la fin de l'execution (comme un close() sur un fichier)
         """
+        self.output.close()
         self.output = None

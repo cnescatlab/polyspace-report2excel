@@ -3,9 +3,6 @@
 """ Nom du module: RTFReader
  Description: Ce module permet la lecture d'un RTF et l'extraction des
     tableaux qu'il contient.
- Version: 1
- Date: 9 avril 2019
- Auteur: Louis MARTIN
  Methodes et classes publiques:
         - HTMLReader
             __init__(filename, version=18)
@@ -13,7 +10,7 @@
 """
 
 # __________________________ IMPORT __________________________
-import HTMLReader
+from p2e import HTMLReader
 from striprtf.striprtf import rtf_to_text
 
 # ________________________ CONSTANTES ________________________

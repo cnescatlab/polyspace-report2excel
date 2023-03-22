@@ -1,0 +1,40 @@
+[project]
+# https://pypi.org/project/polyspace-report2excel/
+name = "polyspace-report2excel"
+version = "1.0" 
+description = "read a polyspace report and export misra or run-time results"
+readme = "README.md"
+requires-python = ">=3"
+license = {file = "LICENSE"}
+keywords = ["polyspace", "report", "excel", "misra"]
+authors = [
+  {name = "CAT Lab", email = "L-lequal@cnes.fr" }
+]
+maintainers = [
+  {name = "CAT Lab", email = "L-lequal@cnes.fr" }
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Quality Assurance",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3"
+]
+
+# https://packaging.python.org/discussions/install-requires-vs-requirements/
+dependencies = [
+  "XlsxWriter",
+  "html2text",
+  "striprtf"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/cnescatlab/polyspace-report2excel"
+"Bug Reports" = "https://github.com/cnescatlab/polyspace-report2excel/issues"
+
+[project.scripts]
+p2e = "p2e:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
