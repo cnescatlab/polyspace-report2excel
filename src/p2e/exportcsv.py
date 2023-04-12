@@ -3,8 +3,6 @@
  Methodes et classes publiques:
         - exportxlsx
             __init__(filename)
-            normalize(value)
-            stringtofilename(value)
             add_sheet(name, data, section="None")
             create_synthese(is_misra = False)
             export()
@@ -12,25 +10,12 @@
 
 # __________________________ IMPORT __________________________
 import csv,os,shutil
+from utils import normalize, stringtofilename
 
 # __________________ Definition de classes ___________________
 class Exportcsv(object):
-    """ Nom de la classe: Exportxlsx
-     Description: Permet l'export d'un ensemble de donnees dans un fichier excel"""
-
-    @staticmethod
-    def normalize(value):
-        """ Enleve tout les caracteres speciaux de la chaine value """
-        value = value.strip()
-        value = "".join(x for x in value if x.isalnum() or x == " ")
-        return value
-
-    @staticmethod
-    def stringtofilename(value):
-        """ Recupere le nom d'un fichier. On suppose que ce nom ne contient pas d'espace. """
-        value = "".join(x for x in value if x not in "[]:*?/")
-        value = value.replace(" ", "\\")
-        return value.split("\\")[-1]
+    """ Nom de la classe: Exportcsv
+     Description: Permet l'export d'un ensemble de donnees dans un fichier csv"""
 
     def __init__(self, filename):
         self.sheets = dict()
@@ -67,7 +52,7 @@ class Exportcsv(object):
             data = [["#"] + data[0]] + [[section] + d for d in data[1:]]
 
         try:
-            csv_path = os.path.join(self.output, self.normalize(name)+".csv")
+            csv_path = os.path.join(self.output, normalize(name)+".csv")
         except FileNotFoundError:
             print("The specified output directory does not exist.")
 
@@ -76,13 +61,13 @@ class Exportcsv(object):
             sheet = open(csv_path, "w", newline = "")
             # On garde les donnees en memoire, utile si on cherche a faire une synthese plus tard
 
-            self.sheets[self.stringtofilename(name)] = [None, len(data), data, name]
+            self.sheets[stringtofilename(name)] = [None, len(data), data, name]
             firstline = 0
         else:
             sheet = open(csv_path, "a", newline = "")
-            firstline = self.sheets[self.stringtofilename(name)][1]
+            firstline = self.sheets[stringtofilename(name)][1]
             data = data[1:]
-            self.sheets[self.stringtofilename(name)][2] += data
+            self.sheets[stringtofilename(name)][2] += data
 
         csv_writer = self.get_writer(sheet)
 
@@ -111,7 +96,7 @@ class Exportcsv(object):
                     line = 1
                 for row in sheet[2][1:]:
                     row = [d.strip() for d in row]
-                    csv_writer.writerow([self.stringtofilename(sheet[3])] + row)
+                    csv_writer.writerow([stringtofilename(sheet[3])] + row)
         synth_sheet.close()
 
 

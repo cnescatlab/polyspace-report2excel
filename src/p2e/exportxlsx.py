@@ -3,8 +3,6 @@
  Methodes et classes publiques:
         - exportxlsx
             __init__(filename)
-            normalize(value)
-            stringtofilename(value)
             add_sheet(name, data, section="None")
             create_synthese(is_misra = False)
             export()
@@ -12,33 +10,17 @@
 
 # __________________________ IMPORT __________________________
 import xlsxwriter as xwriter
-
+from utils import stringtofilename
 
 # __________________ Definition de classes ___________________
 class Exportxlsx(object):
     """ Nom de la classe: Exportxlsx
      Description: Permet l'export d'un ensemble de donnees dans un fichier excel"""
 
-    @staticmethod
-    def normalize(value):
-        """ Enleve tout les caracteres speciaux de la chaine value """
-        value = value.strip()
-        value = "".join(x for x in value if x.isalnum() or x == " ")
-        return value
-
-    @staticmethod
-    def stringtofilename(value):
-        """ Recupere le nom d'un fichier. On suppose que ce nom ne contient pas d'espace. """
-        value = "".join(x for x in value if x not in "[]:*?/")
-        value = value.replace(" ", "\\")
-        return value.split("\\")[-1]
-
     def __init__(self, filename):
         self.sheets = dict()
         self.filename = filename
         self.output = xwriter.Workbook(self.filename + ".xlsx")
-
-
 
     def add_sheet(self, name, data, section=None):
         """
@@ -66,15 +48,15 @@ class Exportxlsx(object):
 
         # On essaye de creer la feuille, si celle-ci existe deja l'exception DuplicateWorksheetName sera levee
         try:
-            sheet = self.output.add_worksheet(self.stringtofilename(name))
+            sheet = self.output.add_worksheet(stringtofilename(name))
             # On garde les donnees en memoire, utile si on cherche a faire une synthese plus tard
-            self.sheets[self.stringtofilename(name)] = [sheet, len(data), data, name]
+            self.sheets[stringtofilename(name)] = [sheet, len(data), data, name]
             firstline = 0
         except xwriter.exceptions.DuplicateWorksheetName:
-            sheet = self.sheets[self.stringtofilename(name)][0]
-            firstline = self.sheets[self.stringtofilename(name)][1]
+            sheet = self.sheets[stringtofilename(name)][0]
+            firstline = self.sheets[stringtofilename(name)][1]
             data = data[1:]
-            self.sheets[self.stringtofilename(name)][2] += data
+            self.sheets[stringtofilename(name)][2] += data
 
         # Cette variable determine la longueur maximale d'une case, cela est utilise pour mettre en forme les cellules
         # dans excel
@@ -113,7 +95,7 @@ class Exportxlsx(object):
                     line = 1
                 for row in sheet[2][1:]:
                     row = [d.strip() for d in row]
-                    synth_sheet.write_row(line, 0, [self.stringtofilename(sheet[3])] + row)
+                    synth_sheet.write_row(line, 0, [stringtofilename(sheet[3])] + row)
                     line += 1
 
 
