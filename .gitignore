@@ -9,3 +9,4 @@ export/
 export_csv/
 export_html/
 /dist
+*.egg-info
