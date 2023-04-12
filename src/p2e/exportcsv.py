@@ -10,7 +10,7 @@
 
 # __________________________ IMPORT __________________________
 import csv,os,shutil
-from utils import normalize, stringtofilename
+from p2e.utils import Utils
 
 # __________________ Definition de classes ___________________
 class Exportcsv(object):
@@ -52,7 +52,7 @@ class Exportcsv(object):
             data = [["#"] + data[0]] + [[section] + d for d in data[1:]]
 
         try:
-            csv_path = os.path.join(self.output, normalize(name)+".csv")
+            csv_path = os.path.join(self.output, Utils.normalize(name)+".csv")
         except FileNotFoundError:
             print("The specified output directory does not exist.")
 
@@ -61,13 +61,13 @@ class Exportcsv(object):
             sheet = open(csv_path, "w", newline = "")
             # On garde les donnees en memoire, utile si on cherche a faire une synthese plus tard
 
-            self.sheets[stringtofilename(name)] = [None, len(data), data, name]
+            self.sheets[Utils.stringtofilename(name)] = [None, len(data), data, name]
             firstline = 0
         else:
             sheet = open(csv_path, "a", newline = "")
-            firstline = self.sheets[stringtofilename(name)][1]
+            firstline = self.sheets[Utils.stringtofilename(name)][1]
             data = data[1:]
-            self.sheets[stringtofilename(name)][2] += data
+            self.sheets[Utils.stringtofilename(name)][2] += data
 
         csv_writer = self.get_writer(sheet)
 
@@ -96,7 +96,7 @@ class Exportcsv(object):
                     line = 1
                 for row in sheet[2][1:]:
                     row = [d.strip() for d in row]
-                    csv_writer.writerow([stringtofilename(sheet[3])] + row)
+                    csv_writer.writerow([Utils.stringtofilename(sheet[3])] + row)
         synth_sheet.close()
 
 

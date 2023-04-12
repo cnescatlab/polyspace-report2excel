@@ -12,7 +12,7 @@ import argparse
 from p2e.exportcsv import Exportcsv
 from p2e.exportxlsx import Exportxlsx
 from p2e.HTMLReader import HTMLReader
-from utils import normalize, stringtofilename
+from p2e.utils import Utils
 
 def main():
     # ________________________ VARIABLES _________________________
@@ -57,14 +57,14 @@ def export_tables_to_output(tables, output_folder, misra, runtime, csv):
     for chapter in tables.keys():
         # ouverture du fichier de sortie (un fichier par chapitre)
         if not csv:
-            output = Exportxlsx(os.path.join(output_folder, normalize(chapter)))
+            output = Exportxlsx(os.path.join(output_folder, Utils.normalize(chapter)))
         else:
-            output = Exportcsv(os.path.join(output_folder, normalize(chapter)))
+            output = Exportcsv(os.path.join(output_folder, Utils.normalize(chapter)))
 
         # Export de toute les tables dans les excel
         for table in tables[chapter]:
             output.add_sheet(
-                stringtofilename(table['name'])[-31:],
+                Utils.stringtofilename(table['name'])[-31:],
                 table['table'],
                 table["section"]
             )
