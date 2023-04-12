@@ -58,7 +58,7 @@ class Exportxlsx(object):
         if not data:
             return
         if self.output is None:
-            raise Exception("Output file is closed")
+            raise FileNotFoundError("File not found")
 
         # On ajoute une colonne si besoin.
         if section is not None:
@@ -78,7 +78,7 @@ class Exportxlsx(object):
 
         # Cette variable determine la longueur maximale d'une case, cela est utilise pour mettre en forme les cellules
         # dans excel
-        col_width = [0 for i in range(len(data[0]))]
+        col_width = [0 for _ in range(len(data[0]))]
         bold = self.output.add_format({'bold': True})
 
         # Ajout des donnees

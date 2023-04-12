@@ -32,7 +32,6 @@ class HTMLReader(object):
         l'extraction des tableaux qu'il contient """
 
     def __init__(self, filename, version=18):
-        self.__filename = filename
         self._file = open(filename, "r")
         self.__version = version
         self._lines = None
