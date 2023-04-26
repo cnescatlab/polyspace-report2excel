@@ -8,10 +8,10 @@ requires-python = ">=3"
 license = {file = "LICENSE"}
 keywords = ["polyspace", "report", "excel", "misra"]
 authors = [
-  {name = "CAT Lab", email = "L-lequal@cnes.fr" }
+  {name = "CAT Lab"}
 ]
 maintainers = [
-  {name = "CAT Lab", email = "L-lequal@cnes.fr" }
+  {name = "CAT Lab"}
 ]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
