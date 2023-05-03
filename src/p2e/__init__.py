@@ -8,6 +8,8 @@ HTMLReader:
     read HTML file and extract arrays from it
 RTFReader:
     read RTF file and extract arrays from it
+utils:
+    utility functions
 main:
     entrypoint for using this module
 """

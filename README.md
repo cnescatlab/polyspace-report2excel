@@ -34,9 +34,9 @@ If you don't want to install the package `polyspace-report2excel`, first install
 
 Then, you can run:
 ``` 
-python main.py input.html ouput-folder/
+python src/p2e/main.py input.html ouput-folder/
 
-python main.py input.rtf ouput-folder/ --runtime
+python src/p2e/main.py input.rtf ouput-folder/ --runtime
 ```
 ## Arguments
 - `--misra` will export misra report only.
